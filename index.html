@@ -116,7 +116,20 @@ button {
 
 </div>
 </section>
+<div class="card">
 
+<div class="slider" id="slider2">
+<img src="images/new1.jpg" id="slideImage2">
+</div>
+
+<div class="dots" id="dots2"></div>
+
+<h3>حساب فورت نايت ثاني</h3>
+<p style="color: gold;">250﷼</p>
+
+<button onclick="buy()">شراء</button>
+
+</div>
 <!-- الاشتراكات -->
 <section id="subs">
 <h2>الاشتراكات</h2>
@@ -184,6 +197,52 @@ function buy() {
     window.location.href = "https://instagram.com/2m4b";
 }
 </script>
+let images2 = [
+"images/new1.jpg",
+"images/new2.jpg",
+"images/new3.jpg",
+"images/new4.jpg",
+"images/new5.jpg",
+"images/new6.jpg"
+];
 
+let index2 = 0;
+let startX2 = 0;
+
+const slider2 = document.getElementById("slider2");
+const img2 = document.getElementById("slideImage2");
+const dotsContainer2 = document.getElementById("dots2");
+
+// dots
+images2.forEach((_, i) => {
+    let d = document.createElement("span");
+    d.classList.add("dot");
+    if(i === 0) d.classList.add("active");
+    dotsContainer2.appendChild(d);
+});
+
+function updateDots2(){
+    let dots = dotsContainer2.querySelectorAll(".dot");
+    dots.forEach(d => d.classList.remove("active"));
+    dots[index2].classList.add("active");
+}
+
+// swipe
+slider2.addEventListener("touchstart", (e) => {
+    startX2 = e.touches[0].clientX;
+});
+
+slider2.addEventListener("touchend", (e) => {
+    let endX = e.changedTouches[0].clientX;
+
+    if (startX2 - endX > 50) {
+        index2 = (index2 + 1) % images2.length;
+    } else if (endX - startX2 > 50) {
+        index2 = (index2 - 1 + images2.length) % images2.length;
+    }
+
+    img2.src = images2[index2];
+    updateDots2();
+});
 </body>
 </html>
