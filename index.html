@@ -1,8 +1,10 @@
-<!DOCTYPE html><html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>2M4B Store</title>
+
 <style>
 body {
     margin: 0;
@@ -17,10 +19,24 @@ header {
     font-size: 24px;
     font-weight: bold;
 }
-.products {
+nav {
     display: flex;
     justify-content: center;
+    gap: 20px;
+    background: #111;
+    padding: 10px;
+}
+nav a {
+    color: white;
+    text-decoration: none;
+}
+section {
     padding: 20px;
+}
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
 }
 .card {
     background: #1a1a1a;
@@ -28,18 +44,12 @@ header {
     border-radius: 15px;
     text-align: center;
     box-shadow: 0 0 15px red;
-    width: 300px;
-}
-.slider {
-    position: relative;
-    overflow: hidden;
 }
 .slider img {
     width: 100%;
     border-radius: 10px;
 }
 .dots {
-    text-align: center;
     margin-top: 8px;
 }
 .dot {
@@ -62,36 +72,68 @@ button {
     border-radius: 5px;
     margin-top: 10px;
 }
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.9);
-    justify-content: center;
-    align-items: center;
-}
-.modal img {
-    width: 90%;
-    max-width: 400px;
-}
 </style>
 </head>
-<body><header>🐺 2M4B STORE</header><div class="products">
-<div class="card"><div class="slider" id="slider">
-<img src="images/account3.jpg" id="slideImage" onclick="openImage()">
-</div><div class="dots" id="dots"></div><h3>حساب فورت نايت مميز</h3>
-<p style="color: gold; font-size: 18px;">460﷼</p>
-<button onclick="buy()">شراء</button></div>
-</div><div class="modal" id="modal" onclick="closeImage()">
-<img id="modalImg">
-</div><script>
+
+<body>
+
+<header>🐺 2M4B STORE</header>
+
+<nav>
+<a href="#home">الرئيسية</a>
+<a href="#accounts">الحسابات</a>
+<a href="#subs">الاشتراكات</a>
+</nav>
+
+<!-- المنتجات -->
+<section id="home">
+<h2>المنتجات</h2>
+<div class="products">
+<div class="card">
+<h3>منتج رقمي</h3>
+<p>100﷼</p>
+<button onclick="buy()">شراء</button>
+</div>
+</div>
+</section>
+
+<!-- الحسابات -->
+<section id="accounts">
+<h2>الحسابات</h2>
+<div class="products">
+
+<div class="card">
+<div class="slider" id="slider">
+<img src="images/account3.jpg" id="slideImage">
+</div>
+
+<div class="dots" id="dots"></div>
+
+<h3>حساب فورت نايت مميز</h3>
+<p style="color: gold;">460﷼</p>
+<button onclick="buy()">شراء</button>
+</div>
+
+</div>
+</section>
+
+<!-- الاشتراكات -->
+<section id="subs">
+<h2>الاشتراكات</h2>
+<div class="products">
+<div class="card">
+<h3>اشتراك شهر</h3>
+<p>50﷼</p>
+<button onclick="buy()">شراء</button>
+</div>
+</div>
+</section>
+
+<script>
 let images = [
-"images/account3.jpg",
 "images/account1.jpg",
 "images/account2.jpg",
+"images/account3.jpg",
 "images/account4.jpg",
 "images/account5.jpg",
 "images/account6.jpg",
@@ -106,7 +148,7 @@ const slider = document.getElementById("slider");
 const img = document.getElementById("slideImage");
 const dotsContainer = document.getElementById("dots");
 
-// create dots
+// dots
 images.forEach((_, i) => {
     let d = document.createElement("span");
     d.classList.add("dot");
@@ -120,6 +162,7 @@ function updateDots(){
     dots[index].classList.add("active");
 }
 
+// swipe
 slider.addEventListener("touchstart", (e) => {
     startX = e.touches[0].clientX;
 });
@@ -137,19 +180,10 @@ slider.addEventListener("touchend", (e) => {
     updateDots();
 });
 
-// zoom
-function openImage(){
-    document.getElementById("modal").style.display = "flex";
-    document.getElementById("modalImg").src = images[index];
-}
-
-function closeImage(){
-    document.getElementById("modal").style.display = "none";
-}
-
 function buy() {
-    alert("جارٍ تحويلك إلى الانستقرام...");
     window.location.href = "https://instagram.com/2m4b";
 }
-</script></body>
+</script>
+
+</body>
 </html>
