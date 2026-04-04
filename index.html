@@ -13,7 +13,7 @@ body {
     color: white;
 }
 header {
-    background: linear-gradient(90deg, #ff0000, #000);
+    background: linear-gradient(90deg, red, black);
     padding: 15px;
     text-align: center;
     font-size: 24px;
@@ -30,13 +30,11 @@ nav a {
     color: white;
     text-decoration: none;
 }
-section {
-    padding: 20px;
-}
 .products {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
+    padding: 20px;
 }
 .card {
     background: #1a1a1a;
@@ -49,26 +47,11 @@ section {
     width: 100%;
     border-radius: 10px;
 }
-.dots {
-    margin-top: 8px;
-}
-.dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    background: gray;
-    border-radius: 50%;
-    margin: 3px;
-}
-.active {
-    background: red;
-}
 button {
     background: red;
     border: none;
     padding: 10px;
     color: white;
-    cursor: pointer;
     border-radius: 5px;
     margin-top: 10px;
 }
@@ -80,60 +63,88 @@ button {
 <header>🐺 2M4B STORE</header>
 
 <nav>
-<a href="#home">الرئيسية</a>
 <a href="#accounts">الحسابات</a>
 <a href="#subs">الاشتراكات</a>
 </nav>
 
-<!-- المنتجات -->
-<section id="home">
-<h2>المنتجات</h2>
-<div class="products">
-<div class="card">
-<h3>منتج رقمي</h3>
-<p>100﷼</p>
-<button onclick="buy()">شراء</button>
-</div>
-</div>
-</section>
-
 <!-- الحسابات -->
 <section id="accounts">
-<h2>الحسابات</h2>
+<h2 style="text-align:center;">الحسابات</h2>
 <div class="products">
 
+<!-- المنتج 1 -->
 <div class="card">
-<div class="slider" id="slider">
-<img src="images/account3.jpg" id="slideImage">
+<div class="slider" id="s1">
+<img id="img1" src="images/account1.jpg">
 </div>
-
-<div class="dots" id="dots"></div>
-
 <h3>حساب فورت نايت مميز</h3>
 <p style="color: gold;">460﷼</p>
 <button onclick="buy()">شراء</button>
 </div>
 
+<!-- المنتج 2 -->
+<div class="card">
+<div class="slider" id="s2">
+<img id="img2" src="images/new1.jpg">
+</div>
+<h3>حساب ثاني</h3>
+<p style="color: gold;">250﷼</p>
+<button onclick="buy()">شراء</button>
+</div>
+
+<!-- المنتج 3 -->
+<div class="card">
+<div class="slider" id="s3">
+<img id="img3" src="images/pic1.jpg">
+</div>
+<h3>pic</h3>
+<p style="color: gold;">350﷼</p>
+<button onclick="buy()">شراء</button>
+</div>
+
 </div>
 </section>
-<div class="slider" id="slider2">
-    <img id="img2" src="images/new1.jpg">
-    <div id="dots2"></div>
-</div>
+
 <!-- الاشتراكات -->
 <section id="subs">
-<h2>الاشتراكات</h2>
+<h2 style="text-align:center;">الاشتراكات</h2>
 <div class="products">
 <div class="card">
 <h3>اشتراك شهر</h3>
-<p>50﷼</p>
+<p style="color: gold;">50﷼</p>
 <button onclick="buy()">شراء</button>
 </div>
 </div>
 </section>
 
 <script>
-let images = [
+// function swipe
+function slider(id, images){
+let index = 0;
+let startX = 0;
+
+const container = document.getElementById(id);
+const img = container.querySelector("img");
+
+container.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+});
+
+container.addEventListener("touchend", e => {
+    let endX = e.changedTouches[0].clientX;
+
+    if(startX - endX > 50){
+        index = (index + 1) % images.length;
+    } else if(endX - startX > 50){
+        index = (index - 1 + images.length) % images.length;
+    }
+
+    img.src = images[index];
+});
+}
+
+// المنتجات
+slider("s1", [
 "images/account1.jpg",
 "images/account2.jpg",
 "images/account3.jpg",
@@ -142,66 +153,29 @@ let images = [
 "images/account6.jpg",
 "images/account7.jpg",
 "images/account8.jpg"
-];
+]);
 
-let index = 0;
-let startX = 0;
+slider("s2", [
+"images/new1.jpg",
+"images/new2.jpg",
+"images/new3.jpg",
+"images/new4.jpg",
+"images/new5.jpg",
+"images/new6.jpg"
+]);
 
-const slider = document.getElementById("slider");
-const img = document.getElementById("slideImage");
-const dotsContainer = document.getElementById("dots");
+slider("s3", [
+"images/pic1.jpg",
+"images/pic2.jpg",
+"images/pic3.jpg",
+"images/pic4.jpg"
+]);
 
-// dots
-images.forEach((_, i) => {
-    let d = document.createElement("span");
-    d.classList.add("dot");
-    if(i === 0) d.classList.add("active");
-    dotsContainer.appendChild(d);
-});
-
-function updateDots(){
-    let dots = document.querySelectorAll(".dot");
-    dots.forEach(d => d.classList.remove("active"));
-    dots[index].classList.add("active");
+// زر شراء
+function buy(){
+window.location.href = "https://instagram.com/2m4b";
 }
-
-// swipe
-slider.addEventListener("touchstart", (e) => {
-    startX = e.touches[0].clientX;
-});
-
-slider.addEventListener("touchend", (e) => {
-    let endX = e.changedTouches[0].clientX;
-
-    if (startX - endX > 50) {
-        index = (index + 1) % images.length;
-    } else if (endX - startX > 50) {
-        index = (index - 1 + images.length) % images.length;
-    }
-
-    img.src = images[index];
-    updateDots();
-});
-
-function buy() {
-    window.location.href = "https://instagram.com/2m4b";
-}
-<script>
-let images2 = [
-  "images/new1.jpg",
-  "images/new2.jpg",
-  "images/new3.jpg",
-  "images/new4.jpg",
-  "images/new5.jpg",
-  "images/new6.jpg"
-];
-
-let index2 = 0;
-
-function nextImage2() {
-  index2 = (index2 + 1) % images2.length;
-  document.getElementById("img2").src = images2[index2];
-}
-
-setInterval(nextImage2, 3000);
 </script>
+
+</body>
+</html>
