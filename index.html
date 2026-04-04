@@ -213,7 +213,8 @@ const slider2 = document.getElementById("slider2");
 const img2 = document.getElementById("slideImage2");
 const dotsContainer2 = document.getElementById("dots2");
 
-// dots
+if (slider2 && img2 && dotsContainer2) {
+
 images2.forEach((_, i) => {
     let d = document.createElement("span");
     d.classList.add("dot");
@@ -227,7 +228,6 @@ function updateDots2(){
     dots[index2].classList.add("active");
 }
 
-// swipe
 slider2.addEventListener("touchstart", (e) => {
     startX2 = e.touches[0].clientX;
 });
@@ -244,5 +244,7 @@ slider2.addEventListener("touchend", (e) => {
     img2.src = images2[index2];
     updateDots2();
 });
+
+}
 </body>
 </html>
