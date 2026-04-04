@@ -186,7 +186,7 @@ slider.addEventListener("touchend", (e) => {
 function buy() {
     window.location.href = "https://instagram.com/2m4b";
 }
-</script>
+<script>
 let images2 = [
   "images/new1.jpg",
   "images/new2.jpg",
@@ -198,14 +198,10 @@ let images2 = [
 
 let index2 = 0;
 
-function showImage2() {
+function nextImage2() {
+  index2 = (index2 + 1) % images2.length;
   document.getElementById("img2").src = images2[index2];
 }
 
-function nextImage2() {
-  index2 = (index2 + 1) % images2.length;
-  showImage2();
-}
-
-// تغيير تلقائي كل 3 ثواني
 setInterval(nextImage2, 3000);
+</script>
