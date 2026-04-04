@@ -17,18 +17,6 @@ header {
     padding: 15px;
     text-align: center;
     font-size: 24px;
-    font-weight: bold;
-}
-nav {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    background: #111;
-    padding: 10px;
-}
-nav a {
-    color: white;
-    text-decoration: none;
 }
 .products {
     display: grid;
@@ -42,6 +30,9 @@ nav a {
     border-radius: 15px;
     text-align: center;
     box-shadow: 0 0 15px red;
+}
+.slider {
+    overflow: hidden;
 }
 .slider img {
     width: 100%;
@@ -62,20 +53,14 @@ button {
 
 <header>🐺 2M4B STORE</header>
 
-<nav>
-<a href="#accounts">الحسابات</a>
-<a href="#subs">الاشتراكات</a>
-</nav>
-
-<!-- الحسابات -->
-<section id="accounts">
+<section>
 <h2 style="text-align:center;">الحسابات</h2>
 <div class="products">
 
 <!-- المنتج 1 -->
 <div class="card">
 <div class="slider" id="s1">
-<img id="img1" src="images/account1.jpg">
+<img src="images/account1.jpg">
 </div>
 <h3>حساب فورت نايت مميز</h3>
 <p style="color: gold;">460﷼</p>
@@ -85,7 +70,7 @@ button {
 <!-- المنتج 2 -->
 <div class="card">
 <div class="slider" id="s2">
-<img id="img2" src="images/new1.jpg">
+<img src="images/new1.jpg">
 </div>
 <h3>حساب ثاني</h3>
 <p style="color: gold;">250﷼</p>
@@ -95,9 +80,9 @@ button {
 <!-- المنتج 3 -->
 <div class="card">
 <div class="slider" id="s3">
-<img id="img3" src="images/pic1.jpg">
+<img src="images/pic1.jpg">
 </div>
-<h3>pic</h3>
+<h3>الحساب الثالث</h3>
 <p style="color: gold;">350﷼</p>
 <button onclick="buy()">شراء</button>
 </div>
@@ -105,46 +90,33 @@ button {
 </div>
 </section>
 
-<!-- الاشتراكات -->
-<section id="subs">
-<h2 style="text-align:center;">الاشتراكات</h2>
-<div class="products">
-<div class="card">
-<h3>اشتراك شهر</h3>
-<p style="color: gold;">50﷼</p>
-<button onclick="buy()">شراء</button>
-</div>
-</div>
-</section>
-
 <script>
-// function swipe
-function slider(id, images){
-let index = 0;
-let startX = 0;
+function makeSlider(id, images) {
+    let index = 0;
+    let startX = 0;
 
-const container = document.getElementById(id);
-const img = container.querySelector("img");
+    const slider = document.getElementById(id);
+    const img = slider.querySelector("img");
 
-container.addEventListener("touchstart", e => {
-    startX = e.touches[0].clientX;
-});
+    slider.addEventListener("touchstart", e => {
+        startX = e.touches[0].clientX;
+    });
 
-container.addEventListener("touchend", e => {
-    let endX = e.changedTouches[0].clientX;
+    slider.addEventListener("touchend", e => {
+        let endX = e.changedTouches[0].clientX;
 
-    if(startX - endX > 50){
-        index = (index + 1) % images.length;
-    } else if(endX - startX > 50){
-        index = (index - 1 + images.length) % images.length;
-    }
+        if (startX - endX > 50) {
+            index = (index + 1) % images.length;
+        } else if (endX - startX > 50) {
+            index = (index - 1 + images.length) % images.length;
+        }
 
-    img.src = images[index];
-});
+        img.src = images[index];
+    });
 }
 
-// المنتجات
-slider("s1", [
+// سلايدرز
+makeSlider("s1", [
 "images/account1.jpg",
 "images/account2.jpg",
 "images/account3.jpg",
@@ -155,7 +127,7 @@ slider("s1", [
 "images/account8.jpg"
 ]);
 
-slider("s2", [
+makeSlider("s2", [
 "images/new1.jpg",
 "images/new2.jpg",
 "images/new3.jpg",
@@ -164,16 +136,15 @@ slider("s2", [
 "images/new6.jpg"
 ]);
 
-slider("s3", [
+makeSlider("s3", [
 "images/pic1.jpg",
 "images/pic2.jpg",
 "images/pic3.jpg",
 "images/pic4.jpg"
 ]);
 
-// زر شراء
 function buy(){
-window.location.href = "https://instagram.com/2m4b";
+    window.location.href = "https://instagram.com/2m4b";
 }
 </script>
 
