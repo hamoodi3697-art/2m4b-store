@@ -1,180 +1,629 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2M4B Store</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2M4B Store</title>
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial;
-    background: #0f0f0f;
-    color: white;
-}
-header {
-    background: linear-gradient(90deg, red, black);
-    padding: 15px;
-    text-align: center;
-    font-size: 24px;
-}
-.products {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
-.card {
-    background: #1a1a1a;
-    padding: 15px;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 0 15px red;
-}
-.slider img {
-    width: 100%;
-    border-radius: 10px;
-}
-button {
-    background: red;
-    border: none;
-    padding: 10px;
-    color: white;
-    border-radius: 5px;
-    margin-top: 10px;
-}
-</style>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Cairo", sans-serif;
+      background: #050505;
+      color: #fff;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* الهيدر */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(8, 8, 8, 0.97);
+      border-bottom: 1px solid rgba(255, 174, 0, 0.2);
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    .logo span {
+      color: #e5a93d;
+    }
+
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .menu-btn {
+      font-size: 32px;
+      color: #e5a93d;
+      cursor: pointer;
+      line-height: 1;
+      user-select: none;
+    }
+
+    .header-link {
+      font-size: 24px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    /* القائمة الجانبية */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      right: -280px;
+      width: 280px;
+      height: 100%;
+      background: #0d0d0d;
+      z-index: 2000;
+      transition: 0.3s;
+      border-left: 1px solid rgba(229, 169, 61, 0.2);
+      box-shadow: -10px 0 25px rgba(0, 0, 0, 0.5);
+      padding-top: 80px;
+    }
+
+    .side-menu.active {
+      right: 0;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      font-size: 34px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .side-menu a {
+      display: block;
+      padding: 18px 22px;
+      border-bottom: 1px solid #1d1d1d;
+      font-size: 18px;
+      transition: 0.25s;
+    }
+
+    .side-menu a:hover {
+      background: #161616;
+      color: #e5a93d;
+      padding-right: 28px;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 1500;
+      display: none;
+    }
+
+    .overlay.active {
+      display: block;
+    }
+
+    /* البانر */
+    .hero {
+      position: relative;
+      min-height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+      background:
+        linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.7)),
+        radial-gradient(circle at top, rgba(180,0,0,0.55), transparent 50%),
+        linear-gradient(135deg, #220000, #080808 60%);
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.28;
+    }
+
+    .hero::before {
+      background: red;
+      top: -60px;
+      right: -60px;
+    }
+
+    .hero::after {
+      background: #e5a93d;
+      bottom: -80px;
+      left: -80px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      margin-bottom: 12px;
+      font-weight: 800;
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: #ddd;
+      margin-bottom: 20px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-buttons a {
+      padding: 12px 22px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      transition: 0.3s;
+    }
+
+    .btn-main {
+      background: linear-gradient(90deg, #b30000, #ff2a2a);
+      color: #fff;
+      box-shadow: 0 0 18px rgba(255, 0, 0, 0.35);
+    }
+
+    .btn-main:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      border: 1px solid #e5a93d;
+      color: #e5a93d;
+      background: transparent;
+    }
+
+    .btn-outline:hover {
+      background: #e5a93d;
+      color: #111;
+    }
+
+    /* الأقسام */
+    .section {
+      padding: 50px 16px 30px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .section-head {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .section-head h2 {
+      font-size: 34px;
+      margin-bottom: 8px;
+      font-weight: 800;
+    }
+
+    .section-head p {
+      color: #bbb;
+      font-size: 17px;
+    }
+
+    .section-line {
+      width: 110px;
+      height: 4px;
+      margin: 14px auto 0;
+      border-radius: 50px;
+      background: linear-gradient(90deg, transparent, #b30000, #e5a93d, transparent);
+    }
+
+    /* المنتجات */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .product-card {
+      background: linear-gradient(180deg, #9f2323, #7d1c1c);
+      border: 1px solid rgba(255, 188, 65, 0.28);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.28);
+      transition: 0.3s;
+      position: relative;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    .badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #18a51b;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 10px;
+      z-index: 2;
+    }
+
+    .slider {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1.15 / 1;
+      overflow: hidden;
+      background: #111;
+    }
+
+    .slider img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .product-content {
+      padding: 16px;
+      text-align: center;
+    }
+
+    .product-content h3 {
+      font-size: 22px;
+      margin-bottom: 10px;
+      font-weight: 800;
+      min-height: 62px;
+    }
+
+    .product-desc {
+      color: #f0d9d9;
+      font-size: 15px;
+      min-height: 48px;
+      margin-bottom: 12px;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .old-price {
+      color: #e2b4b4;
+      text-decoration: line-through;
+      font-size: 18px;
+      opacity: 0.8;
+    }
+
+    .price {
+      color: #ffd15c;
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .buy-btn {
+      width: 100%;
+      background: transparent;
+      color: #ffd15c;
+      border: 2px solid #dca340;
+      border-radius: 14px;
+      padding: 13px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    .buy-btn:hover {
+      background: #dca340;
+      color: #111;
+    }
+
+    /* الفوتر */
+    footer {
+      margin-top: 40px;
+      padding: 24px 16px;
+      text-align: center;
+      color: #9a9a9a;
+      border-top: 1px solid #1b1b1b;
+      background: #090909;
+    }
+
+    /* للجوال */
+    @media (max-width: 768px) {
+      .hero {
+        min-height: 260px;
+        padding: 30px 16px;
+      }
+
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      .hero p {
+        font-size: 17px;
+      }
+
+      .section-head h2 {
+        font-size: 28px;
+      }
+
+      .product-content h3 {
+        font-size: 20px;
+        min-height: auto;
+      }
+
+      .price {
+        font-size: 25px;
+      }
+
+      .logo {
+        font-size: 22px;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<header>🐺 2M4B STORE</header>
+  <header>
+    <div class="topbar">
+      <div class="header-icons">
+        <div class="menu-btn" onclick="openMenu()">☰</div>
+      </div>
 
-<!-- الحسابات -->
-<section>
-<h2 style="text-align:center;">الحسابات</h2>
-<div class="products">
+      <div class="logo">2M4B <span>STORE</span></div>
 
-<div class="card">
-<div class="slider" id="s1">
-<img src="images/account1.jpg">
-</div>
-<h3>حساب فورت نايت مميز</h3>
-<p style="color: gold;">460﷼</p>
-<button onclick="buy()">شراء</button>
-</div>
+      <div class="header-icons">
+        <a class="header-link" href="#accounts">→</a>
+      </div>
+    </div>
+  </header>
 
-<div class="card">
-<div class="slider" id="s2">
-<img src="images/new1.jpg">
-</div>
-<h3>حساب ثاني</h3>
-<p style="color: gold;">250﷼</p>
-<button onclick="buy()">شراء</button>
-</div>
+  <div class="side-menu" id="sideMenu">
+    <div class="close-btn" onclick="closeMenu()">×</div>
+    <a href="#accounts" onclick="closeMenu()">الحسابات</a>
+    <a href="#subscriptions" onclick="closeMenu()">الاشتراكات</a>
+    <a href="#top" onclick="closeMenu()">الرئيسية</a>
+  </div>
 
-<div class="card">
-<div class="slider" id="s3">
-<img src="images/pic1.jpg">
-</div>
-<h3>الحساب الثالث</h3>
-<p style="color: gold;">350﷼</p>
-<button onclick="buy()">شراء</button>
-</div>
+  <div class="overlay" id="overlay" onclick="closeMenu()"></div>
 
-<div class="card">
-<div class="slider" id="s4">
-<img src="images/fot1.jpg">
-</div>
-<h3>كود ويلد كات</h3>
-<p style="color: gold;">250﷼</p>
-<button onclick="buy()">شراء</button>
-</div>
+  <section class="hero" id="top">
+    <div class="hero-content">
+      <h1>اكتشف عالم 2M4B</h1>
+      <p>حسابات واشتراكات بأسعار قوية وتصميم متجر احترافي</p>
+      <div class="hero-buttons">
+        <a href="#accounts" class="btn-main">تصفح الحسابات</a>
+        <a href="#subscriptions" class="btn-outline">تصفح الاشتراكات</a>
+      </div>
+    </div>
+  </section>
 
-</div>
-</section>
+  <section class="section" id="accounts">
+    <div class="section-head">
+      <h2>الحسابات</h2>
+      <p>أفضل الحسابات المتوفرة عندنا</p>
+      <div class="section-line"></div>
+    </div>
 
-<!-- الاشتراكات -->
-<section>
-<h2 style="text-align:center;">الاشتراكات</h2>
-<div class="products">
+    <div class="products-grid">
 
-<div class="card">
-<div class="slider" id="s5">
-<img src="images/net1.jpg">
-</div>
-<h3>نتفلكس 3 شهور</h3>
-<p style="color: gold;">50﷼</p>
-<button onclick="buy()">شراء</button>
-</div>
+      <div class="product-card">
+        <div class="badge">ضمان ذهبي</div>
+        <div class="slider" id="s1">
+          <img src="images/account1.jpg" alt="حساب فورت نايت مميز">
+        </div>
+        <div class="product-content">
+          <h3>حساب فورت نايت مميز</h3>
+          <p class="product-desc">حساب مميز جاهز للبيع مع صور متعددة ومعاينة واضحة</p>
+          <div class="price-row">
+            <span class="old-price">520﷼</span>
+            <span class="price">460﷼</span>
+          </div>
+          <button class="buy-btn" onclick="buy('حساب فورت نايت مميز')">أضف للسلة</button>
+        </div>
+      </div>
 
-</div>
-</section>
+      <div class="product-card">
+        <div class="badge">الأكثر طلبًا</div>
+        <div class="slider" id="s2">
+          <img src="images/new1.jpg" alt="حساب ثاني">
+        </div>
+        <div class="product-content">
+          <h3>حساب ثاني</h3>
+          <p class="product-desc">حساب جاهز مع صور تفصيلية وسعر مناسب للشراء السريع</p>
+          <div class="price-row">
+            <span class="old-price">300﷼</span>
+            <span class="price">250﷼</span>
+          </div>
+          <button class="buy-btn" onclick="buy('حساب ثاني')">أضف للسلة</button>
+        </div>
+      </div>
 
-<script>
-function makeSlider(id, images) {
-    let index = 0;
-    let startX = 0;
+      <div class="product-card">
+        <div class="badge">مميز</div>
+        <div class="slider" id="s3">
+          <img src="images/pic1.jpg" alt="الحساب الثالث">
+        </div>
+        <div class="product-content">
+          <h3>الحساب الثالث</h3>
+          <p class="product-desc">حساب مرتب ومناسب للعرض داخل المتجر بشكل احترافي</p>
+          <div class="price-row">
+            <span class="old-price">400﷼</span>
+            <span class="price">350﷼</span>
+          </div>
+          <button class="buy-btn" onclick="buy('الحساب الثالث')">أضف للسلة</button>
+        </div>
+      </div>
 
-    const slider = document.getElementById(id);
-    const img = slider.querySelector("img");
+      <div class="product-card">
+        <div class="badge">سعر قوي</div>
+        <div class="slider" id="s4">
+          <img src="images/fot1.jpg" alt="كود ويلد كات">
+        </div>
+        <div class="product-content">
+          <h3>كود ويلد كات</h3>
+          <p class="product-desc">منتج مميز بشكل أنيق وواضح مثل شكل المتاجر المشهورة</p>
+          <div class="price-row">
+            <span class="old-price">300﷼</span>
+            <span class="price">250﷼</span>
+          </div>
+          <button class="buy-btn" onclick="buy('كود ويلد كات')">أضف للسلة</button>
+        </div>
+      </div>
 
-    slider.addEventListener("touchstart", e => {
+    </div>
+  </section>
+
+  <section class="section" id="subscriptions">
+    <div class="section-head">
+      <h2>الاشتراكات</h2>
+      <p>استمتع بأفضل الاشتراكات بأسعار ممتازة</p>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="products-grid">
+
+      <div class="product-card">
+        <div class="badge">الأقل سعرًا</div>
+        <div class="slider" id="s5">
+          <img src="images/net1.jpg" alt="نتفلكس 3 شهور">
+        </div>
+        <div class="product-content">
+          <h3>نتفلكس 3 شهور</h3>
+          <p class="product-desc">اشتراك ممتاز مناسب للعرض داخل قسم الاشتراكات</p>
+          <div class="price-row">
+            <span class="old-price">70﷼</span>
+            <span class="price">50﷼</span>
+          </div>
+          <button class="buy-btn" onclick="buy('نتفلكس 3 شهور')">أضف للسلة</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    جميع الحقوق محفوظة © 2M4B STORE
+  </footer>
+
+  <script>
+    function openMenu() {
+      document.getElementById("sideMenu").classList.add("active");
+      document.getElementById("overlay").classList.add("active");
+    }
+
+    function closeMenu() {
+      document.getElementById("sideMenu").classList.remove("active");
+      document.getElementById("overlay").classList.remove("active");
+    }
+
+    function makeSlider(id, images) {
+      let index = 0;
+      let startX = 0;
+
+      const slider = document.getElementById(id);
+      const img = slider.querySelector("img");
+
+      if (!slider || !img || images.length <= 1) return;
+
+      slider.addEventListener("touchstart", e => {
         startX = e.touches[0].clientX;
-    });
+      });
 
-    slider.addEventListener("touchend", e => {
+      slider.addEventListener("touchend", e => {
         let endX = e.changedTouches[0].clientX;
 
         if (startX - endX > 50) {
-            index = (index + 1) % images.length;
+          index = (index + 1) % images.length;
         } else if (endX - startX > 50) {
-            index = (index - 1 + images.length) % images.length;
+          index = (index - 1 + images.length) % images.length;
         }
 
         img.src = images[index];
-    });
-}
+      });
+    }
 
-makeSlider("s1", [
-"images/account1.jpg",
-"images/account2.jpg",
-"images/account3.jpg",
-"images/account4.jpg",
-"images/account5.jpg",
-"images/account6.jpg",
-"images/account7.jpg",
-"images/account8.jpg"
-]);
+    makeSlider("s1", [
+      "images/account1.jpg",
+      "images/account2.jpg",
+      "images/account3.jpg",
+      "images/account4.jpg",
+      "images/account5.jpg",
+      "images/account6.jpg",
+      "images/account7.jpg",
+      "images/account8.jpg"
+    ]);
 
-makeSlider("s2", [
-"images/new1.jpg",
-"images/new2.jpg",
-"images/new3.jpg",
-"images/new4.jpg",
-"images/new5.jpg",
-"images/new6.jpg"
-]);
+    makeSlider("s2", [
+      "images/new1.jpg",
+      "images/new2.jpg",
+      "images/new3.jpg",
+      "images/new4.jpg",
+      "images/new5.jpg",
+      "images/new6.jpg"
+    ]);
 
-makeSlider("s3", [
-"images/pic1.jpg",
-"images/pic2.jpg",
-"images/pic3.jpg",
-"images/pic4.jpg"
-]);
+    makeSlider("s3", [
+      "images/pic1.jpg",
+      "images/pic2.jpg",
+      "images/pic3.jpg",
+      "images/pic4.jpg"
+    ]);
 
-makeSlider("s4", [
-"images/fot1.jpg"
-]);
+    makeSlider("s4", [
+      "images/fot1.jpg"
+    ]);
 
-makeSlider("s5", [
-"images/net1.jpg"
-]);
+    makeSlider("s5", [
+      "images/net1.jpg"
+    ]);
 
-function buy(){
-    window.location.href = "https://instagram.com/2m4b";
-}
-</script>
+    function buy(productName) {
+      window.open("https://instagram.com/2m4b", "_blank");
+    }
+  </script>
 
 </body>
 </html>
