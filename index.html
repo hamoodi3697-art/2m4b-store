@@ -8,869 +8,130 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: "Cairo", sans-serif;
-      background: #050505;
-      color: #fff;
-      overflow-x: hidden;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(8, 8, 8, 0.96);
-      border-bottom: 1px solid rgba(229, 169, 61, 0.25);
-      backdrop-filter: blur(8px);
-    }
-
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 16px;
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
-
-    .logo span {
-      color: #e5a93d;
-    }
-
-    .nav-icons {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .icon-btn {
-      font-size: 28px;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .menu-btn {
-      color: #e5a93d;
-    }
-
-    .cart-btn {
-      position: relative;
-      color: white;
-    }
-
-    .cart-count {
-      position: absolute;
-      top: -8px;
-      left: -8px;
-      background: #e5a93d;
-      color: #111;
-      font-size: 12px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-    }
-
-    .side-menu {
-      position: fixed;
-      top: 0;
-      right: -290px;
-      width: 290px;
-      height: 100%;
-      background: #0d0d0d;
-      z-index: 2000;
-      transition: 0.3s;
-      border-left: 1px solid rgba(229, 169, 61, 0.2);
-      box-shadow: -8px 0 30px rgba(0, 0, 0, 0.45);
-      padding-top: 80px;
-    }
-
-    .side-menu.active {
-      right: 0;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 14px;
-      left: 18px;
-      font-size: 34px;
-      cursor: pointer;
-    }
-
-    .side-menu a {
-      display: block;
-      padding: 18px 22px;
-      border-bottom: 1px solid #1a1a1a;
-      font-size: 18px;
-      transition: 0.25s;
-    }
-
-    .side-menu a:hover {
-      background: #171717;
-      color: #e5a93d;
-      padding-right: 28px;
-    }
-
-    .cart-panel {
-      position: fixed;
-      top: 0;
-      left: -340px;
-      width: 340px;
-      max-width: 92%;
-      height: 100%;
-      background: #0c0c0c;
-      z-index: 2100;
-      transition: 0.3s;
-      border-right: 1px solid rgba(229, 169, 61, 0.2);
-      padding: 20px 16px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .cart-panel.active {
-      left: 0;
-    }
-
-    .cart-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 18px;
-      padding-top: 8px;
-    }
-
-    .cart-header h3 {
-      font-size: 24px;
-      color: #e5a93d;
-    }
-
-    .cart-items {
-      flex: 1;
-      overflow-y: auto;
-      margin-bottom: 15px;
-    }
-
-    .cart-item {
-      background: #151515;
-      border: 1px solid #262626;
-      border-radius: 14px;
-      padding: 12px;
-      margin-bottom: 10px;
-    }
-
-    .cart-item h4 {
-      font-size: 16px;
-      margin-bottom: 5px;
-    }
-
-    .cart-item p {
-      color: #e5a93d;
-      font-weight: 700;
-    }
-
-    .cart-empty {
-      color: #aaa;
-      text-align: center;
-      margin-top: 40px;
-      font-size: 16px;
-    }
-
-    .cart-footer {
-      border-top: 1px solid #1f1f1f;
-      padding-top: 14px;
-    }
-
-    .cart-total {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 12px;
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .checkout-btn, .clear-btn {
-      width: 100%;
-      border: none;
-      border-radius: 12px;
-      padding: 13px;
-      font-size: 16px;
-      font-weight: 800;
-      cursor: pointer;
-      margin-top: 8px;
-    }
-
-    .checkout-btn {
-      background: linear-gradient(90deg, #b30000, #ff2a2a);
-      color: white;
-    }
-
-    .clear-btn {
-      background: transparent;
-      color: #e5a93d;
-      border: 1px solid #e5a93d;
-    }
-
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.55);
-      display: none;
-      z-index: 1500;
-    }
-
-    .overlay.active {
-      display: block;
-    }
-
-    .hero {
-      min-height: 290px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 35px 18px;
-      background:
-        linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.75)),
-        radial-gradient(circle at top, rgba(170,0,0,0.5), transparent 50%),
-        linear-gradient(135deg, #260000, #070707 60%);
-    }
-
-    .hero-content {
-      max-width: 800px;
-    }
-
-    .hero h1 {
-      font-size: 38px;
-      margin-bottom: 10px;
-      font-weight: 800;
-    }
-
-    .hero p {
-      font-size: 18px;
-      color: #ddd;
-      margin-bottom: 18px;
-    }
-
-    .hero-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .hero-buttons a {
-      padding: 11px 20px;
-      border-radius: 12px;
-      font-weight: 700;
-      transition: 0.3s;
-    }
-
-    .btn-main {
-      background: linear-gradient(90deg, #b30000, #ff2a2a);
-      color: #fff;
-    }
-
-    .btn-outline {
-      border: 1px solid #e5a93d;
-      color: #e5a93d;
-    }
-
-    .section {
-      padding: 42px 0 22px;
-    }
-
-    .section-head {
-      text-align: center;
-      padding: 0 16px;
-      margin-bottom: 20px;
-    }
-
-    .section-head h2 {
-      font-size: 30px;
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
-
-    .section-head p {
-      color: #bdbdbd;
-      font-size: 16px;
-    }
-
-    .section-line {
-      width: 110px;
-      height: 4px;
-      border-radius: 50px;
-      margin: 14px auto 0;
-      background: linear-gradient(90deg, transparent, #b30000, #e5a93d, transparent);
-    }
-
-    /* سلايدر أفقي للمنتجات */
-    .products-slider {
-      display: flex;
-      gap: 16px;
-      overflow-x: auto;
-      padding: 8px 16px 14px;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .products-slider::-webkit-scrollbar {
-      height: 8px;
-    }
-
-    .products-slider::-webkit-scrollbar-thumb {
-      background: #7c1b1b;
-      border-radius: 20px;
-    }
-
-    .products-slider::-webkit-scrollbar-track {
-      background: #111;
-    }
-
-    .product-card {
-      flex: 0 0 270px;
-      scroll-snap-align: start;
-      background: linear-gradient(180deg, #9c2323, #7b1d1d);
-      border: 1px solid rgba(255, 188, 65, 0.28);
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.28);
-      transition: 0.3s;
-      position: relative;
-    }
-
-    .product-card:hover {
-      transform: translateY(-6px);
-    }
-
-    .badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: #18a51b;
-      color: #fff;
-      font-size: 12px;
-      font-weight: 800;
-      padding: 6px 10px;
-      border-radius: 10px;
-      z-index: 2;
-    }
-
-    .slider {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      background: #111;
-      overflow: hidden;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .slider img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .product-content {
-      padding: 15px;
-      text-align: center;
-    }
-
-    .product-content h3 {
-      font-size: 22px;
-      font-weight: 800;
-      margin-bottom: 8px;
-      min-height: 58px;
-    }
-
-    .product-desc {
-      color: #f1d6d6;
-      font-size: 14px;
-      min-height: 42px;
-      margin-bottom: 10px;
-    }
-
-    .price-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-    }
-
-    .old-price {
-      color: #e0b2b2;
-      text-decoration: line-through;
-      font-size: 17px;
-    }
-
-    .price {
-      color: #ffd15c;
-      font-size: 28px;
-      font-weight: 800;
-    }
-
-    .card-actions {
-      display: flex;
-      gap: 10px;
-    }
-
-    .add-cart-btn {
-      flex: 1;
-      background: transparent;
-      color: #ffd15c;
-      border: 2px solid #dca340;
-      border-radius: 14px;
-      padding: 12px;
-      font-size: 17px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.25s;
-    }
-
-    .add-cart-btn:hover {
-      background: #dca340;
-      color: #111;
-    }
-
-    .quick-buy-btn {
-      width: 54px;
-      border: none;
-      border-radius: 14px;
-      background: #111;
-      color: #fff;
-      font-size: 22px;
-      cursor: pointer;
-    }
-
-    footer {
-      margin-top: 30px;
-      padding: 24px 16px;
-      text-align: center;
-      color: #9a9a9a;
-      border-top: 1px solid #1b1b1b;
-      background: #090909;
-    }
-
-    @media (max-width: 768px) {
-      .hero h1 {
-        font-size: 30px;
-      }
-
-      .hero p {
-        font-size: 16px;
-      }
-
-      .section-head h2 {
-        font-size: 26px;
-      }
-
-      .product-card {
-        flex: 0 0 230px;
-      }
-
-      .product-content h3 {
-        font-size: 19px;
-        min-height: 50px;
-      }
-
-      .price {
-        font-size: 24px;
-      }
-    }
+    * {margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth;}
+    body {font-family:"Cairo",sans-serif;background:#050505;color:#fff;overflow-x:hidden;}
+    header {position:sticky;top:0;z-index:1000;background:#080808;border-bottom:1px solid #222;}
+    .topbar {display:flex;justify-content:space-between;align-items:center;padding:14px 16px;}
+    .logo {font-size:24px;font-weight:800;}
+    .logo span {color:#e5a93d;}
+    .icon-btn {font-size:28px;cursor:pointer;}
+    .menu-btn {color:#e5a93d;}
+    .cart-btn {position:relative;}
+    .cart-count {position:absolute;top:-8px;left:-8px;background:#e5a93d;color:#111;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold;}
+    .side-menu {position:fixed;top:0;right:-290px;width:290px;height:100%;background:#0d0d0d;z-index:2000;transition:0.3s;padding-top:80px;}
+    .side-menu.active {right:0;}
+    .close-btn {position:absolute;top:15px;left:20px;font-size:30px;cursor:pointer;}
+    .side-menu a {display:block;padding:18px;color:#fff;border-bottom:1px solid #222;}
+    .overlay {position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;z-index:1500;}
+    .overlay.active {display:block;}
+    .products-slider {display:flex;gap:16px;overflow-x:auto;padding:10px;}
+    .product-card {flex:0 0 250px;background:#8b1f1f;border-radius:16px;overflow:hidden;}
+    .slider img {width:100%;height:230px;object-fit:cover;}
+    .product-content {padding:14px;text-align:center;}
+    .product-content h3 {font-size:20px;margin-bottom:8px;}
+    .price {color:#ffd15c;font-size:22px;font-weight:bold;margin-bottom:10px;}
+    .add-cart-btn {width:100%;padding:10px;border:none;background:#111;color:#ffd15c;border-radius:10px;cursor:pointer;}
+    footer {text-align:center;padding:20px;color:#aaa;}
   </style>
 </head>
+
 <body>
 
-  <header>
-    <div class="topbar">
-      <div class="nav-icons">
-        <div class="icon-btn menu-btn" onclick="openMenu()">☰</div>
-      </div>
-
-      <div class="logo">2M4B <span>STORE</span></div>
-
-      <div class="nav-icons">
-        <div class="icon-btn cart-btn" onclick="openCart()">
-          🛒
-          <span class="cart-count" id="cartCount">0</span>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="side-menu" id="sideMenu">
-    <div class="close-btn" onclick="closeMenu()">×</div>
-    <a href="#top" onclick="closeMenu()">الرئيسية</a>
-    <a href="#accounts" onclick="closeMenu()">الحسابات</a>
-    <a href="#subscriptions" onclick="closeMenu()">الاشتراكات</a>
-    <a href="#vbucks" onclick="closeMenu()">فيبوكس</a>
-  </div>
-
-  <div class="cart-panel" id="cartPanel">
-    <div class="cart-header">
-      <h3>السلة</h3>
-      <div class="close-btn" style="position:static;font-size:30px;" onclick="closeCart()">×</div>
-    </div>
-
-    <div class="cart-items" id="cartItems">
-      <div class="cart-empty">السلة فارغة</div>
-    </div>
-
-    <div class="cart-footer">
-      <div class="cart-total">
-        <span>الإجمالي</span>
-        <span id="cartTotal">0﷼</span>
-      </div>
-      <button class="checkout-btn" onclick="checkoutInstagram()">إتمام الشراء عبر إنستقرام</button>
-      <button class="clear-btn" onclick="clearCart()">تفريغ السلة</button>
+<header>
+  <div class="topbar">
+    <div class="icon-btn menu-btn" onclick="openMenu()">☰</div>
+    <div class="logo">2M4B <span>STORE</span></div>
+    <div class="icon-btn cart-btn" onclick="openCart()">🛒
+      <span class="cart-count" id="cartCount">0</span>
     </div>
   </div>
+</header>
 
-  <div class="overlay" id="overlay" onclick="closeAllPanels()"></div>
+<div class="side-menu" id="sideMenu">
+  <div class="close-btn" onclick="closeMenu()">×</div>
+  <a href="#accounts">الحسابات</a>
+  <a href="#subscriptions">الاشتراكات</a>
+  <a href="#vbucks">فيبوكس</a>
+</div>
 
-  <section class="hero" id="top">
-    <div class="hero-content">
-      <h1>اكتشف عالم 2M4B</h1>
-      <p>حسابات واشتراكات وفيبوكس بتصميم متجر أوضح وأرتب وسلة شراء جاهزة</p>
-      <div class="hero-buttons">
-        <a href="#accounts" class="btn-main">الحسابات</a>
-        <a href="#subscriptions" class="btn-outline">الاشتراكات</a>
-        <a href="#vbucks" class="btn-outline">فيبوكس</a>
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+
+<section id="accounts">
+  <h2 style="text-align:center;">الحسابات</h2>
+  <div class="products-slider">
+
+    <div class="product-card">
+      <div class="slider"><img src="images/account1.jpg"></div>
+      <div class="product-content">
+        <h3>حساب فورت نايت</h3>
+        <div class="price">460﷼</div>
+        <button class="add-cart-btn" onclick="addToCart('حساب فورت نايت',460)">أضف للسلة</button>
       </div>
     </div>
-  </section>
 
-  <section class="section" id="accounts">
-    <div class="section-head">
-      <h2>الحسابات</h2>
-      <p>اسحب يمين ويسار لتصفح المنتجات</p>
-      <div class="section-line"></div>
-    </div>
+  </div>
+</section>
 
-    <div class="products-slider">
-      <div class="product-card">
-        <div class="badge">ضمان ذهبي</div>
-        <div class="slider" id="s1">
-          <img src="images/account1.jpg" alt="حساب فورت نايت مميز">
-        </div>
-        <div class="product-content">
-          <h3>حساب فورت نايت مميز</h3>
-          <p class="product-desc">حساب مميز جاهز للبيع مع صور واضحة داخل المتجر</p>
-          <div class="price-row">
-            <span class="old-price">520﷼</span>
-            <span class="price">460﷼</span>
-          </div>
-          <div class="card-actions">
-            <button class="add-cart-btn" onclick="addToCart('حساب فورت نايت مميز', 460)">أضف للسلة</button>
-            <button class="quick-buy-btn" onclick="addToCart('حساب فورت نايت مميز', 460)">🛒</button>
-          </div>
-        </div>
-      </div>
+<section id="subscriptions">
+  <h2 style="text-align:center;">الاشتراكات</h2>
+  <div class="products-slider">
 
-      <div class="product-card">
-        <div class="badge">الأكثر طلبًا</div>
-        <div class="slider" id="s2">
-          <img src="images/new1.jpg" alt="حساب ثاني">
-        </div>
-        <div class="product-content">
-          <h3>حساب ثاني</h3>
-          <p class="product-desc">عرض مرتب بشكل أفقي مثل المتاجر الحديثة</p>
-          <div class="price-row">
-            <span class="old-price">300﷼</span>
-            <span class="price">250﷼</span>
-          </div>
-          <div class="card-actions">
-            <button class="add-cart-btn" onclick="addToCart('حساب ثاني', 250)">أضف للسلة</button>
-            <button class="quick-buy-btn" onclick="addToCart('حساب ثاني', 250)">🛒</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card">
-        <div class="badge">مميز</div>
-        <div class="slider" id="s3">
-          <img src="images/pic1.jpg" alt="الحساب الثالث">
-        </div>
-        <div class="product-content">
-          <h3>الحساب الثالث</h3>
-          <p class="product-desc">منتج مع سلايدر صور وسعر واضح وشكل أنيق</p>
-          <div class="price-row">
-            <span class="old-price">400﷼</span>
-            <span class="price">350﷼</span>
-          </div>
-          <div class="card-actions">
-            <button class="add-cart-btn" onclick="addToCart('الحساب الثالث', 350)">أضف للسلة</button>
-            <button class="quick-buy-btn" onclick="addToCart('الحساب الثالث', 350)">🛒</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card">
-        <div class="badge">سعر قوي</div>
-        <div class="slider" id="s4">
-          <img src="images/fot1.jpg" alt="كود ويلد كات">
-        </div>
-        <div class="product-content">
-          <h3>كود ويلد كات</h3>
-          <p class="product-desc">تصميم أوضح وصورة مرتبة وحجم مناسب للجوال</p>
-          <div class="price-row">
-            <span class="old-price">300﷼</span>
-            <span class="price">250﷼</span>
-          </div>
-          <div class="card-actions">
-            <button class="add-cart-btn" onclick="addToCart('كود ويلد كات', 250)">أضف للسلة</button>
-            <button class="quick-buy-btn" onclick="addToCart('كود ويلد كات', 250)">🛒</button>
-          </div>
-        </div>
+    <div class="product-card">
+      <div class="slider"><img src="images/net1.jpg"></div>
+      <div class="product-content">
+        <h3>نتفلكس 3 شهور</h3>
+        <div class="price">50﷼</div>
+        <button class="add-cart-btn" onclick="addToCart('نتفلكس',50)">أضف للسلة</button>
       </div>
     </div>
-  </section>
 
-  <section class="section" id="subscriptions">
-    <div class="section-head">
-      <h2>الاشتراكات</h2>
-      <p>قسم خاص للاشتراكات</p>
-      <div class="section-line"></div>
-    </div>
+  </div>
+</section>
 
-    <div class="products-slider">
-      <div class="product-card">
-        <div class="badge">الأقل سعرًا</div>
-        <div class="slider" id="s5">
-          <img src="images/net1.jpg" alt="نتفلكس 3 شهور">
-        </div>
-        <div class="product-content">
-          <h3>نتفلكس 3 شهور</h3>
-          <p class="product-desc">اشتراك ممتاز مع عرض مرتب وسهل التصفح</p>
-          <div class="price-row">
-            <span class="old-price">70﷼</span>
-            <span class="price">50﷼</span>
-          </div>
-          <div class="card-actions">
-            <button class="add-cart-btn" onclick="addToCart('نتفلكس 3 شهور', 50)">أضف للسلة</button>
-            <button class="quick-buy-btn" onclick="addToCart('نتفلكس 3 شهور', 50)">🛒</button>
-          </div>
-        </div>
+<section id="vbucks">
+  <h2 style="text-align:center;">فيبوكس</h2>
+  <div class="products-slider">
+
+    <div class="product-card">
+      <div class="slider"><img src="images/vbucks1.jpg"></div>
+      <div class="product-content">
+        <h3>1000 V.B</h3>
+        <div class="price">30﷼</div>
+        <button class="add-cart-btn" onclick="addToCart('1000 V.B',30)">أضف للسلة</button>
       </div>
     </div>
-  </section>
 
-  <section class="section" id="vbucks">
-    <div class="section-head">
-      <h2>فيبوكس</h2>
-      <p>قسم جديد خاص بمنتجات الفيبوكس</p>
-      <div class="section-line"></div>
-    </div>
+  </div>
+</section>
 
-    <div class="products-slider">
-      <div class="product-card">
-        <div class="badge">الأكثر مبيعًا</div>
-        <div class="slider" id="s6">
-          <img src="images/vbucks1.jpg" alt="1000 V.B">
-        </div>
-        <div class="product-content">
-          <h3>1000 V.B</h3>
-          <p class="product-desc">شحن 1000 فيبوكس بشكل مرتب وواضح داخل المتجر</p>
-          <div class="price-row">
-            <span class="old-price">40﷼</span>
-            <span class="price">30﷼</span>
-          </div>
-          <div class="card-actions">
-            <button class="add-cart-btn" onclick="addToCart('1000 V.B', 30)">أضف للسلة</button>
-            <button class="quick-buy-btn" onclick="addToCart('1000 V.B', 30)">🛒</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<footer>© 2M4B STORE</footer>
 
-  <footer>
-    جميع الحقوق محفوظة © 2M4B STORE
-  </footer>
+<script>
+let cart=[];
 
-  <script>
-    let cart = [];
+function openMenu(){
+  sideMenu.classList.add("active");
+  overlay.classList.add("active");
+}
 
-    function openMenu() {
-      document.getElementById("sideMenu").classList.add("active");
-      document.getElementById("overlay").classList.add("active");
-    }
+function closeMenu(){
+  sideMenu.classList.remove("active");
+  overlay.classList.remove("active");
+}
 
-    function closeMenu() {
-      document.getElementById("sideMenu").classList.remove("active");
-      if (!document.getElementById("cartPanel").classList.contains("active")) {
-        document.getElementById("overlay").classList.remove("active");
-      }
-    }
+function closeAll(){
+  closeMenu();
+}
 
-    function openCart() {
-      document.getElementById("cartPanel").classList.add("active");
-      document.getElementById("overlay").classList.add("active");
-    }
+function addToCart(name,price){
+  cart.push({name,price});
+  document.getElementById("cartCount").innerText=cart.length;
+}
 
-    function closeCart() {
-      document.getElementById("cartPanel").classList.remove("active");
-      if (!document.getElementById("sideMenu").classList.contains("active")) {
-        document.getElementById("overlay").classList.remove("active");
-      }
-    }
-
-    function closeAllPanels() {
-      document.getElementById("sideMenu").classList.remove("active");
-      document.getElementById("cartPanel").classList.remove("active");
-      document.getElementById("overlay").classList.remove("active");
-    }
-
-    function addToCart(name, price) {
-      cart.push({ name, price });
-      updateCartUI();
-      openCart();
-    }
-
-    function updateCartUI() {
-      const cartItems = document.getElementById("cartItems");
-      const cartCount = document.getElementById("cartCount");
-      const cartTotal = document.getElementById("cartTotal");
-
-      cartCount.textContent = cart.length;
-
-      if (cart.length === 0) {
-        cartItems.innerHTML = '<div class="cart-empty">السلة فارغة</div>';
-        cartTotal.textContent = '0﷼';
-        return;
-      }
-
-      let total = 0;
-      cartItems.innerHTML = "";
-
-      cart.forEach((item, index) => {
-        total += item.price;
-
-        const div = document.createElement("div");
-        div.className = "cart-item";
-        div.innerHTML = `
-          <h4>${item.name}</h4>
-          <p>${item.price}﷼</p>
-        `;
-        cartItems.appendChild(div);
-      });
-
-      cartTotal.textContent = total + '﷼';
-    }
-
-    function clearCart() {
-      cart = [];
-      updateCartUI();
-    }
-
-    function checkoutInstagram() {
-      if (cart.length === 0) {
-        alert("السلة فارغة");
-        return;
-      }
-
-      let message = "السلام عليكم، أبغى أطلب المنتجات التالية:%0A%0A";
-      let total = 0;
-
-      cart.forEach((item, index) => {
-        message += `${index + 1}- ${item.name} - ${item.price}﷼%0A`;
-        total += item.price;
-      });
-
-      message += `%0Aالإجمالي: ${total}﷼`;
-
-      window.open("https://instagram.com/2m4b", "_blank");
-    }
-
-    function makeSlider(id, images) {
-      let index = 0;
-      let startX = 0;
-
-      const slider = document.getElementById(id);
-      if (!slider) return;
-
-      const img = slider.querySelector("img");
-      if (!img || images.length <= 1) return;
-
-      slider.addEventListener("touchstart", e => {
-        startX = e.touches[0].clientX;
-      });
-
-      slider.addEventListener("touchend", e => {
-        const endX = e.changedTouches[0].clientX;
-
-        if (startX - endX > 50) {
-          index = (index + 1) % images.length;
-        } else if (endX - startX > 50) {
-          index = (index - 1 + images.length) % images.length;
-        }
-
-        img.src = images[index];
-      });
-    }
-
-    makeSlider("s1", [
-      "images/account1.jpg",
-      "images/account2.jpg",
-      "images/account3.jpg",
-      "images/account4.jpg",
-      "images/account5.jpg",
-      "images/account6.jpg",
-      "images/account7.jpg",
-      "images/account8.jpg"
-    ]);
-
-    makeSlider("s2", [
-      "images/new1.jpg",
-      "images/new2.jpg",
-      "images/new3.jpg",
-      "images/new4.jpg",
-      "images/new5.jpg",
-      "images/new6.jpg"
-    ]);
-
-    makeSlider("s3", [
-      "images/pic1.jpg",
-      "images/pic2.jpg",
-      "images/pic3.jpg",
-      "images/pic4.jpg"
-    ]);
-
-    makeSlider("s4", [
-      "images/fot1.jpg"
-    ]);
-
-    makeSlider("s5", [
-      "images/net1.jpg"
-    ]);
-
-    makeSlider("s6", [
-      "images/vbucks1.jpg"
-    ]);
-
-    updateCartUI();
-  </script>
+function openCart(){
+  alert("عدد المنتجات في السلة: "+cart.length);
+}
+</script>
 
 </body>
 </html>
